@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+  database:
+    image: postgres:latest
+    volumes:
+      - database:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    env_file:
+      - container.env
+    restart: always
+  redis:
+    image: redis:latest
+    expose:
+      - "6379"
+
+  elasticsearch:
+    image: elasticsearch:6.4.0
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+      - es_logs:/usr/share/elasticsearch/logs
+    expose:
+      - "9200"
+
+  readthedocs:
+    build: ./Docker/readthedocs
+    image: readthedocs
+    expose:
+      - "8000"
+    depends_on:
+      - database
+      - redis
+      - elasticsearch
+    volumes:
+      - rtfd_static:/opt/rtfd/static
+      - rtfd_builds:/opt/rtfd/user_builds
+      - ./templates:/opt/rtfd/templates,readonly
+    env_file:
+      - container.env
+
+  web:
+    build: ./Docker/nginx
+    image: nginx-proxy
+    depends_on:
+      - readthedocs
+    ports:
+      - 80:80
+
+volumes:
+  database:
+  es_data:
+  es_logs:
+  rtfd_static:
+  rtfd_builds:
