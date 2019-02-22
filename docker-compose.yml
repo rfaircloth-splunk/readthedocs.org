@@ -23,7 +23,7 @@ services:
       - "9200"
 
   readthedocs:
-    build: ./Docker/readthedocs
+    build: .
     image: readthedocs
     ports:
       - "8000"
@@ -34,17 +34,19 @@ services:
     volumes:
       - rtfd_static:/opt/rtfd/static
       - rtfd_builds:/opt/rtfd/user_builds
-      - ./templates:/opt/rtfd/templates,readonly
+      - ./templates:/opt/rtfd/readthedocs/templates_custom,ro
     env_file:
       - container.env
 
   web:
-    build: ./Docker/nginx
-    image: nginx-proxy
-    links:
-      - readthedocs
+    image: nginx
     ports:
       - 80:80
+    links:
+      - readthedocs
+    volumes:
+      - ./Docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    command: [nginx-debug, '-g', 'daemon off;']
 
 volumes:
   database:

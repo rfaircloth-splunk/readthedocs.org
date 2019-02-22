@@ -21,7 +21,7 @@ if [ ! -e /opt/rtfd/readthedocs/rtd-provisioned ]; then
     python manage.py compilemessages
 
     echo "Creating users..."
-    python manage.py shell < /opt/rtfd/bin/django-rtd-create-users.py || true
+    python manage.py shell < /opt/rtfd/django-rtd-create-users.py || true
 
     echo "Generating static assets..."
     python manage.py collectstatic --no-input
@@ -48,5 +48,6 @@ if [ "$RTD_HAS_ELASTICSEARCH" == "true" ]; then
 fi
 
 >&2 echo "Starting runserver"
-#python manage.py runserver 0.0.0.0:8000
-gunicorn -w 3 --forwarded-allow-ips="*" -b "0.0.0.0:8000" readthedocs.wsgi 
+
+uwsgi --chdir=/opt/rtfd --module=readthedocs.wsgi:application --master --pidfile=/tmp/readthedocs-master.pid --http-socket=0.0.0.0:8000 --processes=5 --uid=2000 --gid=2000 --harakiri=20 --max-requests=5000 --vacuum --home=/venv --check-static /opt/rtfd
+#
