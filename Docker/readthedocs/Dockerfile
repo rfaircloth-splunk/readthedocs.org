@@ -36,12 +36,12 @@ RUN python3 -m pip install wheel virtualenv && \
     python3 -m virtualenv /venv
 
 COPY . /opt/rtfd
-COPY settings/* /opt/rtfd/readthedocs/settings/
-COPY bin/* /opt/rtfd/bin/
+COPY ./settings/* /opt/rtfd/readthedocs/settings/
+COPY ./bin/* /opt/rtfd/bin/
 
 RUN /bin/bash -c "source /venv/bin/activate; pip install -r /opt/rtfd/requirements.txt; pip install gunicorn psycopg2 psycopg2-binary elasticsearch-dsl "
 
-COPY entrypoint.sh /opt/rtfd/bin/
+COPY ./entrypoint.sh /opt/rtfd/bin/
 RUN adduser --gecos 'py' --disabled-password py && \
     mkdir /opt/rtfd/static && \
     mkdir /opt/rtfd/user_builds && \

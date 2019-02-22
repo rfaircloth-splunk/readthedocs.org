@@ -1,17 +1,17 @@
-version: '3.7'
+version: '3'
 services:
   database:
     image: postgres:latest
     volumes:
       - database:/var/lib/postgresql/data
-    expose:
+    ports:
       - "5432"
     env_file:
       - container.env
     restart: always
   redis:
     image: redis:latest
-    expose:
+    ports:
       - "6379"
 
   elasticsearch:
@@ -19,15 +19,15 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
       - es_logs:/usr/share/elasticsearch/logs
-    expose:
+    ports:
       - "9200"
 
   readthedocs:
     build: ./Docker/readthedocs
     image: readthedocs
-    expose:
+    ports:
       - "8000"
-    depends_on:
+    links:
       - database
       - redis
       - elasticsearch
@@ -41,7 +41,7 @@ services:
   web:
     build: ./Docker/nginx
     image: nginx-proxy
-    depends_on:
+    links:
       - readthedocs
     ports:
       - 80:80
