@@ -27,7 +27,6 @@ class ContainerSettings(CommunityBaseSettings):
     DEBUG = os.getenv('RTD_DEBUG', 'false').lower() == 'true'
 
     SITE_ROOT = '/opt/rtfd'
-
     # Set this to the root domain where this RTD installation will be running
     PRODUCTION_DOMAIN = os.getenv('RTD_PRODUCTION_DOMAIN', 'localhost:8000')
     PUBLIC_DOMAIN = os.getenv('RTD_PUBLIC_DOMAIN', PRODUCTION_DOMAIN)
@@ -148,12 +147,11 @@ class ContainerSettings(CommunityBaseSettings):
         },
     }
 
-    DEBUG = True
-
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': ["/opt/rtfd/templates/", "/opt/rtfd/readthedocs/templates/"],
+            'DIRS': ["/opt/rtfd/readthedocs/templates_custom",
+                     "/opt/rtfd/readthedocs/templates"],
             'OPTIONS': {
                 'debug': DEBUG,
                 'context_processors': [

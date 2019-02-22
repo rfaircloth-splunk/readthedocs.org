@@ -35,19 +35,19 @@ RUN python3 -m pip install wheel virtualenv && \
     python3.7 -m pip install virtualenv wheel && \
     python3 -m virtualenv /venv
 
-COPY . /opt/rtfd
-COPY settings/* /opt/rtfd/readthedocs/settings/
-COPY bin/* /opt/rtfd/bin/
+COPY . /opt/rtfd/
 
-RUN /bin/bash -c "source /venv/bin/activate; pip install -r /opt/rtfd/requirements.txt; pip install gunicorn psycopg2 psycopg2-binary elasticsearch-dsl "
+RUN /bin/bash -c "source /venv/bin/activate; pip install -r /opt/rtfd/requirements.txt; pip install uwsgi psycopg2 psycopg2-binary elasticsearch-dsl "
 
-COPY entrypoint.sh /opt/rtfd/bin/
-RUN adduser --gecos 'py' --disabled-password py && \
-    mkdir /opt/rtfd/static && \
-    mkdir /opt/rtfd/user_builds && \
-    mkdir /opt/rtfd/templates && \
-    chmod +x /opt/rtfd/bin/* && \
-    chown -R py /opt/rtfd/readthedocs
+COPY ./entrypoint.sh /opt/rtfd
+RUN adduser --gecos 'py' -u 2000 --disabled-password py && \
+    mkdir /opt/rtfd/static || true && \
+    mkdir /opt/rtfd/user_builds || true && \
+    mkdir /opt/rtfd/logs || true && \
+    touch /opt/rtfd/logs/debug.log && \
+    mkdir /opt/rtfd/readthedocs/templates_custom || true && \
+    chmod +x /opt/rtfd/entrypoint.sh && \
+    chown -R py:py /opt/rtfd
 
 WORKDIR /opt/rtfd
-ENTRYPOINT ["/bin/bash", "-c","/opt/rtfd/bin/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "-c","/opt/rtfd/entrypoint.sh"]
