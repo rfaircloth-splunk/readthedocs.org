@@ -9,18 +9,18 @@ services:
     env_file:
       - container.env
     restart: always
-  redis:
-    image: redis:latest
-    ports:
-      - "6379"
-
-  elasticsearch:
-    image: elasticsearch:6.4.0
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
-      - es_logs:/usr/share/elasticsearch/logs
-    ports:
-      - "9200"
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - "6379"
+  #
+  # elasticsearch:
+  #   image: elasticsearch:6.4.0
+  #   volumes:
+  #     - es_data:/usr/share/elasticsearch/data
+  #     - es_logs:/usr/share/elasticsearch/logs
+  #   ports:
+  #     - "9200"
 
   readthedocs:
     build: .
@@ -29,8 +29,8 @@ services:
       - "8000"
     links:
       - database
-      - redis
-      - elasticsearch
+      # - redis
+      # - elasticsearch
     volumes:
       - rtfd_static:/opt/rtfd/static
       - rtfd_builds:/opt/rtfd/user_builds
