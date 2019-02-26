@@ -102,9 +102,9 @@ class ContainerSettings(CommunityBaseSettings):
 
     BROKER_URL = 'redis://{0}:{1}/{2}'.format(
         _redis_host, _redis_port, _redis_db)
-
-    CELERY_RESULT_BACKEND = 'redis://{0}:{1}/{2}'.format(
-        _redis_host, _redis_port, _redis_db)
+    #CELERY_RESULT_BACKEND = 'django-cache'
+    #CELERY_RESULT_BACKEND = 'redis://{0}:{1}/{2}'.format(
+    #    _redis_host, _redis_port, _redis_db)
     CELERY_RESULT_SERIALIZER = 'json'
 
     CELERY_ALWAYS_EAGER = True
