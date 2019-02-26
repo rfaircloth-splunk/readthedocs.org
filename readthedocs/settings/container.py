@@ -138,7 +138,7 @@ class ContainerSettings(CommunityBaseSettings):
 #    )
 
     ES_HOSTS = ['{0}:{1}'.format(_elastic_host,
-                                 _elastic_host)]
+                                 _elastic_port)]
 
     ELASTICSEARCH_DSL = {
         'default': {
