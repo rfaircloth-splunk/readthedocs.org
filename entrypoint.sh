@@ -4,7 +4,7 @@ set -e
 source /venv/bin/activate
 cd /opt/rtfd
 
-until PGPASSWORD=$POSTGRES_PASSWORD psql -h "database" -U "$POSTGRES_USER" --dbname $POSTGRES_DB -c '\q'; do
+until PGPASSWORD=$DB_PASS psql -h "$DB_HOST" -U "$DB_USER" --port=$DB_PORT --dbname $DB_NAME -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 1
 done
