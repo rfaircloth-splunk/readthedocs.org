@@ -24,8 +24,7 @@ RUN apt-get -y update && \
     update-locale LANG=en_US.UTF-8 && \
     rm -rf /var/lib/apt/lists/*
 
-COPY . /opt/rtfd/
-COPY ./entrypoint.sh /opt/rtfd
+COPY ["./readthedocs", "./media", "./requirements", "./django-rtd-create-users.py",  "./manage.py", "requirements.txt","./entrypoint.sh" , "/opt/rtfd/"]
 
 # Install test dependencies
 RUN pip install wheel virtualenv && \
