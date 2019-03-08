@@ -26,7 +26,7 @@ class ContainerSettings(CommunityBaseSettings):
 
     DEBUG = os.getenv('RTD_DEBUG', 'false').lower() == 'true'
 
-    SITE_ROOT = '/opt/rtfd'
+    SITE_ROOT = '/opt/app'
     # Set this to the root domain where this RTD installation will be running
     PRODUCTION_DOMAIN = os.getenv('RTD_PRODUCTION_DOMAIN', 'localhost:8000')
     PUBLIC_DOMAIN = os.getenv('RTD_PUBLIC_DOMAIN', PRODUCTION_DOMAIN)
@@ -150,8 +150,8 @@ class ContainerSettings(CommunityBaseSettings):
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': ["/opt/rtfd/readthedocs/templates_custom",
-                     "/opt/rtfd/readthedocs/templates"],
+            'DIRS': ["/opt/app/templates_custom",
+                     "/opt/app/readthedocs/templates"],
             'OPTIONS': {
                 'debug': DEBUG,
                 'context_processors': [
@@ -172,5 +172,16 @@ class ContainerSettings(CommunityBaseSettings):
         },
     ]
 
+    FILE_SYNCER = 'readthedocs.builds.syncers.LocalSyncer'
+
+    # For testing locally. Put this in your /etc/hosts:
+    # 127.0.0.1 test
+    # and navigate to http://test:8000
+    CORS_ORIGIN_WHITELIST = (
+        'localhost',
+    )
+
+    # Disable auto syncing elasticsearch documents in development
+    ELASTICSEARCH_DSL_AUTOSYNC = False
 
 ContainerSettings.load_settings(__name__)

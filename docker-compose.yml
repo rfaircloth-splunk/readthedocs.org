@@ -32,9 +32,7 @@ services:
       # - redis
       # - elasticsearch
     volumes:
-      - rtfd_static:/opt/rtfd/static
-      - rtfd_builds:/opt/rtfd/user_builds
-      - ./templates:/opt/rtfd/readthedocs/templates_custom,ro
+      - rtfd_builds:/opt/app/user_builds
     env_file:
       - container.env
 
@@ -52,5 +50,4 @@ volumes:
   database:
   es_data:
   es_logs:
-  rtfd_static:
   rtfd_builds:
