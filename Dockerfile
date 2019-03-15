@@ -6,7 +6,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
-RUN apt-get update && \
+RUN echo deb http://deb.debian.org/debian stretch-backports main>/etc/apt/sources.list.d/backports.list && \
+    apt-get update && \
+    apt-get upgrade -t stretch-backports git -y && \
     apt-get install -y && \
     pip3 install uwsgi && \
     apt-get install -y locales gettext build-essential git \
